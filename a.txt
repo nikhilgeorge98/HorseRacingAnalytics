@@ -1,0 +1,705 @@
+def generate_favourite_scoreboard(dff,FO_stats):
+    header = html.H3("F1-F16 performance",
+            style={'textAlign': 'center', 'font-weight': 'bold', 'color': '#59ff00', 'margin': '0px',
+                   'font-family': 'Arial Black'})
+    fav_sb = html.Table([
+        html.Thead([
+            html.Tr([
+                html.Th("", className='fav_no_header'),
+                html.Th("TR", id='overall_TR_header'),
+                html.Th("WIN", id='overall_first_header'),
+                html.Th('W%', id='overall_firstpct_header'),
+                html.Th("SHP", id='overall_second_header'),
+                html.Th('2%', id='overall_secondpct_header'),
+                html.Th("THP", id='overall_third_header'),
+                html.Th('3%', id='overall_thirdpct_header'),
+                html.Th('Plc', id='overall_place_header'),
+                html.Th('P%', id='overall_placepct_header'),
+                html.Th('BO', id='overall_loss_header'),
+                html.Th("LWS(WIN)", id='overall_longest_winning_streak_header'),
+                html.Th("LLS(WIN)", id='overall_longest_losing_streak_header')
+            ])
+        ], className='fav_sb_header'),
+        html.Tr([
+            html.Td("F0", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F0',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F0',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F0',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F0',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F0',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F0',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F0',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F0',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F0',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F0',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F0',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F0',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F0'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F0']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F0']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F1", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F1',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F1',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F1',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F1',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F1',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F1',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F1',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F1',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F1',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F1',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F1',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F1',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F1'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F1']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F1']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F2", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F2',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F2',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F2',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F2',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F2',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F2',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F2',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F2',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F2',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F2',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F2',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F2',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F2'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F2']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F2']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F3", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F3',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F3',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F3',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F3',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F3',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F3',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F3',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F3',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F3',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F3',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F3',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F3',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F3'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F3']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F3']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F4", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F4',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F4',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F4',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F4',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F4',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F4',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F4',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F4',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F4',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F4',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F4',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F4',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F4'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F4']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F4']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F5", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F5',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F5',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F5',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F5',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F5',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F5',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F5',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F5',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F5',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F5',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F5',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F5',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F5'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F5']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F5']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F6", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F6',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F6',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F6',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F6',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F6',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F6',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F6',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F6',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F6',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F6',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F6',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F6',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F6'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F6']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F6']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F7", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F7',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F7',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F7',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F7',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F7',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F7',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F7',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F7',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F7',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F7',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F7',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F7',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F7'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F7']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F7']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F8", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F8',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F8',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F8',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F8',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F8',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F8',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F8',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F8',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F8',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F8',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F8',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F8',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F8'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F8']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F8']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F9", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F9',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F9',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F9',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F9',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F9',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F9',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F9',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F9',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F9',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F9',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F9',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F9',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F9'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F9']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F9']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F10", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F10',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F10',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F10',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F10',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F10',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F10',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F10',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F10',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F10',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F10',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F10',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F10',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F10'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F10']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F10']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F11", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F11',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F11',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F11',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F11',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F11',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F11',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F11',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F11',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F11',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F11',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F11',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F11',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F11'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F11']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F11']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F12", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F12',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F12',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F12',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F12',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F12',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F12',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F12',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F12',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F1',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F12',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F12',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F12',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F12'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F12']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F12']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F13", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F13',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F13',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F13',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F13',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F13',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F13',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F13',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F13',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F13',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F13',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F13',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F13',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F13'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F13']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F13']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F14", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F14',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F14',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F14',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F14',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F14',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F14',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F14',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F14',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F14',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F14',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F14',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F14',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F14'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F14']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F14']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F15", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F15',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F15',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F15',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F15',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F15',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F15',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F15',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F15',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F15',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F15',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F15',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F15',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F15'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F15']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F15']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ]),
+        html.Tr([
+            html.Td("F16", className='fav_no_header'),
+            html.Td("{}".format(int(FO_stats['TR'].get('F16',0)))),
+            html.Td(html.Button("{}".format(FO_stats['W'].get('F16',0)), className='overall_first_button',
+                                n_clicks=0),
+                    className='overall_first_pos'),
+            html.Td("{0:.2f}".format(FO_stats['W%'].get('F16',0)),
+                    className='overall_first_pct'),
+            html.Td(html.Button("{}".format(FO_stats['SHP'].get('F16',0)), className='overall_second_button',
+                                n_clicks=0),
+                    className='overall_second_pos'),
+            html.Td("{0:.2f}".format(FO_stats['SHP%'].get('F16',0)),
+                    className='overall_second_pct'),
+            html.Td(html.Button("{}".format(FO_stats['THP'].get('F16',0)), className='overall_third_button',
+                                n_clicks=0),
+                    className='overall_third_pos'),
+            html.Td("{0:.2f}".format(FO_stats['THP%'].get('F16',0)),
+                    className='overall_third_pct'),
+            html.Td(html.Button("{}".format(FO_stats['Plc'].get('F16',0)),
+                                className='overall_place_button', n_clicks=0),
+                    id='overall_place_pos'),
+            html.Td("{0:.2f}".format(FO_stats['Plc%'].get('F16',0)), className='overall_place_pct'),
+            html.Td(html.Button("{}".format(FO_stats['BO'].get('F16',0)), className='overall_loss_button', n_clicks=0),
+                    className='loss'),
+            html.Td("{}".format(FO_stats['LWS'].get('F16',0)), className='overall_longest_winning_streak_data'),
+            html.Td("{}".format(FO_stats['LLS'].get('F16',0)), className='overall_longest_losing_streak_data')
+        ]),
+        html.Tr([
+            html.Td(children=[
+                html.Div("Streaks: {}".format(streak(dff.loc[dff['FO'] == 'F16'])[0]), className='table_streak'),
+                html.Ul(className='fav_standings-table__form',
+                        children=[generate_li_for_fav_sb(1, i, j, n) for n, (i, j) in
+                                  enumerate(zip(dff.loc[dff['FO'] == 'F16']['Pl'][::-1],
+                                                dff.loc[dff['FO'] == 'F16']['FINAL'][::-1]))])
+            ],
+                colSpan=13,
+                style={'padding':'0px'},
+                className='fgcontainer'
+            )
+        ])
+    ], id='fav_sb_table')
+
+    return header, fav_sb
