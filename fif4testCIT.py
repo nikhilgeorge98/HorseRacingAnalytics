@@ -2744,15 +2744,15 @@ def update_main(how, type, combination, Centre, *searchparam):
             scoresh_style = {'display': 'none'}
         except:
             raise PreventUpdate
-
+    # print(f1f4_season_stats.index.names)
     return [ov_score, ov_style, score_return, score2_return, score2_style, graph1, row2_style, graph2, row3_style,
             [centre_df.to_json(orient='split')], [filtered_df.to_json(orient='split')],
-            [f1f4_season_stats.index.names, f1f4_season_stats.reset_index().to_json(orient='split')],
+            [f1f4_season_stats.index.names[0], f1f4_season_stats.index.names[1], f1f4_season_stats.reset_index().to_json(orient='split')],
             score3_return, score3_style, score4_return, score4_style,
-            [f1f4_distance_stats.index.names, f1f4_distance_stats.reset_index().to_json(orient='split')],
-            [f1f4_class_stats.index.names, f1f4_class_stats.reset_index().to_json(orient='split')],
+            [f1f4_distance_stats.index.names[0], f1f4_distance_stats.index.names[1], f1f4_distance_stats.reset_index().to_json(orient='split')],
+            [f1f4_class_stats.index.names[0], f1f4_class_stats.index.names[1], f1f4_class_stats.reset_index().to_json(orient='split')],
             score5_return, score5_style,
-            [f1f4_rno_stats.index.names, f1f4_rno_stats.reset_index().to_json(orient='split')],
+            [f1f4_rno_stats.index.names[0], f1f4_rno_stats.index.names[1], f1f4_rno_stats.reset_index().to_json(orient='split')],
             scoremonth_return, scoremonth_style,
             scoreyear_return, scoreyear_style,
             scorenor_return, scorenor_style,
@@ -2760,13 +2760,13 @@ def update_main(how, type, combination, Centre, *searchparam):
             scoreage_return, scoreage_style,
             scorewt_return, scorewt_style,
             scoresh_return, scoresh_style,
-            [f1f4_month_stats.index.names, f1f4_month_stats.reset_index().to_json(orient='split')],
-            [f1f4_year_stats.index.names, f1f4_year_stats.reset_index().to_json(orient='split')],
-            [f1f4_nor_stats.index.names, f1f4_nor_stats.reset_index().to_json(orient='split')],
-            [f1f4_hno_stats.index.names, f1f4_hno_stats.reset_index().to_json(orient='split')],
-            [f1f4_age_stats.index.names, f1f4_age_stats.reset_index().to_json(orient='split')],
-            [f1f4_wt_stats.index.names, f1f4_wt_stats.reset_index().to_json(orient='split')],
-            [f1f4_sh_stats.index.names, f1f4_sh_stats.reset_index().to_json(orient='split')]]
+            [f1f4_month_stats.index.names[0], f1f4_month_stats.index.names[1], f1f4_month_stats.reset_index().to_json(orient='split')],
+            [f1f4_year_stats.index.names[0], f1f4_year_stats.index.names[1], f1f4_year_stats.reset_index().to_json(orient='split')],
+            [f1f4_nor_stats.index.names[0], f1f4_nor_stats.index.names[1], f1f4_nor_stats.reset_index().to_json(orient='split')],
+            [f1f4_hno_stats.index.names[0], f1f4_hno_stats.index.names[1], f1f4_hno_stats.reset_index().to_json(orient='split')],
+            [f1f4_age_stats.index.names[0], f1f4_age_stats.index.names[1], f1f4_age_stats.reset_index().to_json(orient='split')],
+            [f1f4_wt_stats.index.names[0], f1f4_wt_stats.index.names[1], f1f4_wt_stats.reset_index().to_json(orient='split')],
+            [f1f4_sh_stats.index.names[0], f1f4_sh_stats.index.names[1], f1f4_sh_stats.reset_index().to_json(orient='split')]]
 
 
 @app.callback(
@@ -2937,18 +2937,18 @@ def updatebyseason(active_cell, data, season_df, class_df, distance_df, rno_df, 
     if active_cell is None:
         raise PreventUpdate
     print(active_cell)
-    print(distance_df[0])
-    f1f4_season_stats = pd.read_json(season_df[1], orient='split').set_index(season_df[0])
-    f1f4_distance_stats = pd.read_json(distance_df[1], orient='split').set_index(distance_df[0])
-    f1f4_class_stats = pd.read_json(class_df[1], orient='split').set_index(class_df[0])
-    f1f4_rno_stats = pd.read_json(rno_df[1], orient='split').set_index(rno_df[0])
-    f1f4_month_stats = pd.read_json(month_df[1], orient='split').set_index(month_df[0])
-    f1f4_year_stats = pd.read_json(year_df[1], orient='split').set_index(year_df[0])
-    f1f4_nor_stats = pd.read_json(nor_df[1], orient='split').set_index(nor_df[0])
-    f1f4_hno_stats = pd.read_json(hno_df[1], orient='split').set_index(hno_df[0])
-    f1f4_age_stats = pd.read_json(age_df[1], orient='split').set_index(age_df[0])
-    f1f4_wt_stats = pd.read_json(wt_df[1], orient='split').set_index(wt_df[0])
-    f1f4_sh_stats = pd.read_json(sh_df[1], orient='split').set_index(sh_df[0])
+    print([distance_df[0], distance_df[1]])
+    f1f4_season_stats = pd.read_json(season_df[2], orient='split').set_index([season_df[0], season_df[1]])
+    f1f4_distance_stats = pd.read_json(distance_df[2], orient='split').set_index([distance_df[0], distance_df[1]])
+    f1f4_class_stats = pd.read_json(class_df[2], orient='split').set_index([class_df[0], class_df[1]])
+    f1f4_rno_stats = pd.read_json(rno_df[2], orient='split').set_index([rno_df[0], rno_df[1]])
+    f1f4_month_stats = pd.read_json(month_df[2], orient='split').set_index([month_df[0], month_df[1]])
+    f1f4_year_stats = pd.read_json(year_df[2], orient='split').set_index([year_df[0], year_df[1]])
+    f1f4_nor_stats = pd.read_json(nor_df[2], orient='split').set_index([nor_df[0], nor_df[1]])
+    f1f4_hno_stats = pd.read_json(hno_df[2], orient='split').set_index([hno_df[0], hno_df[1]])
+    f1f4_age_stats = pd.read_json(age_df[2], orient='split').set_index([age_df[0], age_df[1]])
+    f1f4_wt_stats = pd.read_json(wt_df[2], orient='split').set_index([wt_df[0], wt_df[1]])
+    f1f4_sh_stats = pd.read_json(sh_df[2], orient='split').set_index([sh_df[0], sh_df[1]])
 
     row = active_cell['row']
     column_id = active_cell['column_id']
